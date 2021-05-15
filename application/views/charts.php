@@ -78,15 +78,15 @@
         <div class="row">
           <div class="col-md-12">
             <ul style="list-style: none">
-              <h6>Current Value</h6>
-              <li style="color: black;"><span>₹ <?php echo $getTotalCurrentValue;  ?></span></li><br>
-              <h6>Amount Invested</h6>
-              <li style="color: black;">₹ 22,37,153.04</li><br>
-              <h6>Overall Gain</h6>
-              <li style="color: green;">₹ 12,89,435.57</li><br>
-              <h6>Overall Gain %</h6>
-              <li style="color: green;">57.64%</li>
-            </ul>
+                  <h6>Current Value</h6>
+                  <li style="color: black;"><span>₹ <?php echo number_format($all_total_current_value,2,'.',','); ?></span></li><br>
+                  <h6>Amount Invested</h6>
+                  <li style="color: black;">₹ <?php echo number_format($all_total_amt_invested,2,'.',',');?></li><br>
+                  <h6>Overall Gain</h6>
+                  <li style="color: green;">₹ <?php echo number_format($all_total_overall_gain,2,'.',','); ?></li><br>
+                  <h6>Overall Gain %</h6>
+                  <li style="color: green;"><?php echo number_format($all_total_overall_gain_percent,2,'.',',');?>%</li>
+                </ul>
           </div>
         </div>
       </div>
@@ -309,8 +309,3 @@ function drawMonthwiseChart(chart_data, chart_main_title)
 </script>
 
 <?php include('Chart_portfolio_wise.php'); ?>
-
-
-  
-                       
-                     

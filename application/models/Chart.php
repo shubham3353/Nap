@@ -1,17 +1,101 @@
 <?php
-class Chart extends CI_Model { 
+class Chart extends CI_Model {
 
-	public function getTotalCurrentValue()
-	{   
+	public function dashboard_total_current_value()
+	{
 		$this->load->model('CommonModel');
-         $Stock_total_current_value =$this->CommonModel->global_getSumdata("stock_details","stock","current_value","stock_name");
-          $MutualEquitytotal_current_value =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Equity");
-           $MutualDepttotal_current_value =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Debt");
-           $Bondtotal_current_value =$this->CommonModel->global_getSumdata("bond_ltp","bond","current_value","stock_name");
-           $Alltotal = $Stock_total_current_value + $MutualEquitytotal_current_value + $MutualDepttotal_current_value + $Bondtotal_current_value ;
-           return number_format($Alltotal, 2, '.', ',');
+	    $total_current_value =$this->CommonModel->global_getSumdata("stock_details","stock","current_value","stock_name");
+	    $total_current_value_mutual_equity =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Equity");
+		$total_current_value_mutual_debt =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Debt");
+	    $total_current_value_bond =$this->CommonModel->global_getSumdata("bond_ltp","bond","current_value","stock_name");
+	    $All_total_current_value = ($total_current_value +  $total_current_value_mutual_equity + $total_current_value_mutual_debt +  $total_current_value_bond);
+		return $All_total_current_value;
 
 	}
+
+	public function dashboard_total_amt_invested()
+	{
+		$this->load->model('CommonModel');
+	    $total_amt_invested_stock=$this->CommonModel->global_getSumdata("stock_details","stock","amt_invested","stock_name");
+	    $total_amt_invested_mutual_equity=$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","amt_invested","mutual_scheme","Equity");
+	    $total_amt_invested_mutual_debt=$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","amt_invested","mutual_scheme","Debt");
+	    $total_amt_invested_bond=$this->CommonModel->global_getSumdata("bond_ltp","bond","amt_invested","stock_name");
+
+	    $All_total_amt_invested = ($total_amt_invested_stock + $total_amt_invested_mutual_equity + $total_amt_invested_mutual_debt + $total_amt_invested_bond);
+		return $All_total_amt_invested;
+
+	}
+
+
+	public function dashboard_total_overall_gain()   
+	{
+		$this->load->model('CommonModel');
+	    $total_overall_gain_stock=$this->CommonModel->global_getSumdata("stock_details","stock","overall_gain","stock_name");
+	    $total_overall_gain_mutual_euity=$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","overall_gain","mutual_scheme","Equity");
+	    $total_overall_gain_mutual_debt=$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","overall_gain","mutual_scheme","Debt");
+	    $total_overall_gain_bond=$this->CommonModel->global_getSumdata("bond_ltp","bond","overall_gain","stock_name");
+	    $All_total_overall_gain = ($total_overall_gain_stock + $total_overall_gain_mutual_euity + $total_overall_gain_mutual_debt + $total_overall_gain_bond);
+		return $All_total_overall_gain;
+
+	}
+
+
+	public function dashboard_total_overall_gain_percent()   
+	{
+		$this->load->model('CommonModel');
+   		$this->load->model('Chart');
+		$All_total_amt_invested_formated = $this->Chart->dashboard_total_amt_invested();
+	    $All_total_overall_gain_formated = $this->Chart->dashboard_total_overall_gain()	;
+	    $data  = ($All_total_overall_gain_formated) * (100);
+	    $All_total_overall_gain_percent = $data / $All_total_amt_invested_formated; 
+		return $All_total_overall_gain_percent;
+
+	}
+
+	public function stock_total_holding()
+	{
+		$this->load->model('CommonModel');
+   		$this->load->model('Chart');
+   		$All_total_current_value = $this->Chart->dashboard_total_current_value();
+   		$total_current_value =$this->CommonModel->global_getSumdata("stock_details","stock","current_value","stock_name");
+   		$data = ($total_current_value) * (100);
+   		$total_holding = $data / $All_total_current_value;
+   		return number_format($total_holding,2,'.',',');
+	}
+
+	public function mutual_equity_total_holding()
+	{
+		$this->load->model('CommonModel');
+   		$this->load->model('Chart');
+   		$All_total_current_value = $this->Chart->dashboard_total_current_value();
+   		$total_current_value =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Equity");
+   		$data = ($total_current_value) * (100);
+   		$total_holding = $data / $All_total_current_value;
+   		return number_format($total_holding,2,'.',',');
+	}
+
+	public function mutual_debt_total_holding()
+	{
+		$this->load->model('CommonModel');
+   		$this->load->model('Chart');
+   		$All_total_current_value = $this->Chart->dashboard_total_current_value();
+   		$total_current_value =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Debt");
+   		$data = ($total_current_value) * (100);
+   		$total_holding = $data / $All_total_current_value;
+   		return number_format($total_holding,2,'.',',');
+	}
+
+	public function bond_total_holding()
+	{
+		$this->load->model('CommonModel');
+   		$this->load->model('Chart');
+   		$All_total_current_value = $this->Chart->dashboard_total_current_value();
+   		$total_current_value =$this->CommonModel->global_getSumdata("bond_ltp","bond","current_value","stock_name");
+   		$data = ($total_current_value) * (100);
+   		$total_holding = $data / $All_total_current_value;
+   		return number_format($total_holding,2,'.',',');
+	}
+	
 	
 	public function fetch_all_data()
 	{
@@ -31,8 +115,7 @@ class Chart extends CI_Model {
 			    $total_overall_gain=$this->CommonModel->global_getSumdata("stock_details","stock","overall_gain","stock_name");
 			    $total_gain_percentage =$this->CommonModel->global_getSumdata("stock_details","stock","gain_percentage","stock_name");
 			    $total_current_value =$this->CommonModel->global_getSumdata("stock_details","stock","current_value","stock_name");
-			    $total_holding =$this->CommonModel->global_getSumdata("stock_details","stock","holding","stock_name");
-
+			    $total_holding = $this->Chart->stock_total_holding();
 				$data[] = array(
 					"stock_name" => "Stock / Share",
 					"stock_qty" => $total_stock_qty,
@@ -55,8 +138,8 @@ class Chart extends CI_Model {
 			    $total_overall_gain=$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","overall_gain","mutual_scheme","Equity");
 			    $total_gain_percentage =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","gain_percentage","mutual_scheme","Equity");
 			    $total_current_value =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Equity");
-			    $total_holding =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","holding","mutual_scheme","Equity");
-				
+			   	$total_holding = $this->Chart->mutual_equity_total_holding();
+
 				$data[] = array(
 					"stock_name" => "Mutual Funds (Equity)",
 					"stock_qty" => $total_mutual_quantity,
@@ -78,8 +161,7 @@ class Chart extends CI_Model {
 			    $total_overall_gain=$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","overall_gain","mutual_scheme","Debt");
 			    $total_gain_percentage =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","gain_percentage","mutual_scheme","Debt");
 			    $total_current_value =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","current_value","mutual_scheme","Debt");
-			    $total_holding =$this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","holding","mutual_scheme","Debt");
-
+                $total_holding = $this->Chart->mutual_debt_total_holding();
 				$data[] = array(
 					"stock_name" => "Mutual Funds (Debt)",
 					"stock_qty" => $total_mutual_quantity,
@@ -102,8 +184,7 @@ class Chart extends CI_Model {
 			    $total_overall_gain=$this->CommonModel->global_getSumdata("bond_ltp","bond","overall_gain","stock_name");
 			    $total_gain_percentage =$this->CommonModel->global_getSumdata("bond_ltp","bond","gain_percentage","stock_name");
 			    $total_current_value =$this->CommonModel->global_getSumdata("bond_ltp","bond","current_value","stock_name");
-			    $total_holding =$this->CommonModel->global_getSumdata("bond_ltp","bond","holding","stock_name");
-				
+				$total_holding = $this->Chart->bond_total_holding();
 				$data[] = array(
 					"stock_name" => "Traded Bonds",
 					"stock_qty" => $total_bond_qty,
@@ -369,7 +450,9 @@ public function fetch_piChart_PortfolioWise($Assets_value, $portfoliowise_name)
      
   }
 
-  //On load chart ...
+
+
+//On load chart ...
 
   public function fetch_onload_piechart()
 	{
@@ -382,8 +465,7 @@ public function fetch_piChart_PortfolioWise($Assets_value, $portfoliowise_name)
 	                         'Mutual Funds (Debt)' =>  $this->CommonModel->Typewise_MutualInvestmentSumdata("mutual_scheme","mutual_fund_investment","holding","mutual_scheme","Debt"),
 	                         'Traded Bonds' => $this->CommonModel->global_getSumdata("bond_ltp","bond","holding","stock_name")
 	                          );
-  
-
+     
 		foreach ($All_assets as $key=>$val)
 		{
 			  $data[] = array("stock_name" => $key,
@@ -401,6 +483,8 @@ public function fetch_piChart_PortfolioWise($Assets_value, $portfoliowise_name)
 
      
   }
+
+
 
 
 
