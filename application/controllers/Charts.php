@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Charts extends CI_Controller {
 
- 
+
   public function __construct()
   {
     parent::__construct();
@@ -14,12 +14,15 @@ class Charts extends CI_Controller {
   
   public function index()
   {
-    $this->load->model('Chart');
+   $this->load->model('Chart');
    $this->load->model('Dashboard_model');
+   $data['all_total_current_value'] = $this->Chart->dashboard_total_current_value();
+   $data['all_total_amt_invested'] = $this->Chart->dashboard_total_amt_invested();
+   $data['all_total_overall_gain'] = $this->Chart->dashboard_total_overall_gain();
+   $data['all_total_overall_gain_percent'] = $this->Chart->dashboard_total_overall_gain_percent();
    $data['user_info']=$this->Dashboard_model->user_detail();
    $data['show_group']=$this->Dashboard_model->show_groups();
    $data['show_portfolio']=$this->Dashboard_model->show_portfolio();
-   $data['getTotalCurrentValue']=$this->Chart->getTotalCurrentValue();
    $this->load->view('charts',$data);
  }
 
@@ -52,13 +55,11 @@ class Charts extends CI_Controller {
   }
 
 
- public function fetch_onload_piechart()
+public function fetch_onload_piechart()
   { 
    $this->load->model('Chart');
    $this->Chart->fetch_onload_piechart(); 
   }
-
-
 
 
 
