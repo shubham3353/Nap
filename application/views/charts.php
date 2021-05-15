@@ -128,6 +128,16 @@
           google.charts.load('current', {packages: ['corechart']});
           google.charts.setOnLoadCallback();
 
+ //Onload me pie chart code assets wise...........
+        $.ajax({
+        url:"<?php echo base_url(); ?>Charts/fetch_onload_piechart",
+        method:"POST",
+        dataType:"JSON",
+        success:function(data)
+        {  drawMonthwiseChart(data, "Assets Wise Data"); }
+        });
+
+// On dropdown me pie chart load assets wise code .............
          $('#chart_value').change(function(){ 
             var chart_value = $('#chart_value :selected').text();   
           load_monthwise_data(chart_value, 'Asset-Wise Data For');  });

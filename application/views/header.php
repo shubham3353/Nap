@@ -1,4 +1,4 @@
-<?
+<?php
 $uri_segment = $this->uri->segment(1);
 ?>
 <html lang="en">
