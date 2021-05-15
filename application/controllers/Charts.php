@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Charts extends CI_Controller {
 
-
+ 
   public function __construct()
   {
     parent::__construct();
@@ -50,6 +50,16 @@ class Charts extends CI_Controller {
    $this->load->model('Chart');
    $this->Chart->fetch_piChart_PortfolioWise($Assets_value, $portfoliowise_name); 
   }
+
+
+ public function fetch_onload_piechart()
+  { 
+   $this->load->model('Chart');
+   $this->Chart->fetch_onload_piechart(); 
+  }
+
+
+
 
 
 
